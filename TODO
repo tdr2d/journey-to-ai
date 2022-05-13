@@ -1,4 +1,5 @@
 
 SUDOKU:
-pass 01_small_blurred.png
-warp imgage, extract nested cells
+PASS 01_small_blurred.png
+- find lines https://stackoverflow.com/questions/45322630/how-to-detect-lines-in-opencv
+- extract nested cells
