@@ -11,47 +11,46 @@ from transform import four_point_transform
 
 
 data = [
-    'datasets/00_sudoku/00_base.png',
-    'datasets/00_sudoku/01_small_blurred.png',
-    'datasets/00_sudoku/02_newspaper.jpg'
+    'modules/00_sudoku/data/00_base.png',
+    'modules/00_sudoku/data/01_small_blurred.png',
+    'modules/00_sudoku/data/02_newspaper.jpg'
 ]
 
 class SudokuDetector:
     MIN_SIZE_CELL_DIVIDER = 20
 
     def __init__(self, from_image) -> None:
-        self.img =  cv2.imread(from_image)
-        self.gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY) # gray filter
-        self.blur = cv2.bilateralFilter(self.gray, 4, 75, 75) # use bilateral filter in order not to blur edges
+        img = cv2.imread(from_image)
 
-        # Filter
-        self.th1 = cv2.bitwise_not(cv2.adaptiveThreshold(self.blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2))
+        self.naive(img)
+        # self.blur = cv2.bilateralFilter(self.gray, 4, 75, 75) # use bilateral filter in order not to blur edges
 
-        # Contours
-        self.min_w_cell = self.img.shape[2] / self.MIN_SIZE_CELL_DIVIDER
-        self.min_h_cell = self.img.shape[1] / self.MIN_SIZE_CELL_DIVIDER
-        self.biggest_contour = self.find_biggest_contour(self.th1)
+        # # Filter
+        # self.th1 = cv2.bitwise_not(cv2.adaptiveThreshold(self.blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2))
+        # self.th2 = cv2.dilate(self.th1, np.ones((3,3), np.uint8), iterations=3)
 
+        # # Contours
+        # self.biggest_contour = self.find_biggest_contour(self.th1)
+        # if self.biggest_contour is None:
+        #     logging.error("Sudoku not found")
+        # else:
+        #     self.nested_contours = self.find_nested_contours(self.th2, self.biggest_contour)
+    
+    def naive(self, img):
+        _, th = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 200, 255, cv2.THRESH_BINARY)
+        cv2.imwrite('./tmp/naive_th.jpeg', th)
+        contours = cv2.findContours(th, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        if self.biggest_contour is None:
-            logging.error("Sudoku not found")
-        else:
-            # extract = self.extract_from_contour(self.th1, self.biggest_contour, 'data/tmp/98_extract.png')
-            # extract_img = self.extract_from_contour(self.th1, self.biggest_contour, 'data/tmp/98_extract.png')
+        def filter_conts(c):
+            if len(c) != 4:
+                return False
+            x,y,w,h = cv2.boundingRect(c)
+            return w*h > 50
+        
+        contours = list(filter(filter_conts, contours[0]))
+        img = cv2.drawContours(img, contours, -1, (255,0,0), 2)
+        cv2.imwrite('./tmp/naive_img.jpeg', img)
 
-            top_down = four_point_transform(self.th1, self.biggest_contour.reshape(4,2))
-            top_down_img = four_point_transform(self.img, self.biggest_contour.reshape(4,2))
-            nested_contours = self.find_nested_contours(top_down)
-            # cv2.drawContours(self.img,[self.biggest_contour],0, color=(255, 0, 0), thickness=2)
-            cv2.drawContours(top_down_img, nested_contours, -1, color=(0, 255, 0), thickness=1)
-            print(f"Found {len(nested_contours)} nested contours")
-            cv2.imwrite('data/tmp/98_top_down_img.png', top_down_img)
-            cv2.imwrite('data/tmp/99_top_down.png', top_down)
-
-        cv2.imwrite('data/tmp/00_base.png', self.img)
-        cv2.imwrite('data/tmp/01_gray.png', self.gray)
-        cv2.imwrite('data/tmp/02_blur.png', self.blur)
-        cv2.imwrite('data/tmp/03_th1.png', self.th1)
 
     def filter_contours(self, c):
         _,_,w,h = cv2.boundingRect(c)
@@ -96,4 +95,4 @@ class SudokuDetector:
 
 
 if __name__ == '__main__':
-    SudokuDetector(data[1])
+    SudokuDetector(data[0])
