@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import logging
-from utils.transform import four_point_transform
+from transform import four_point_transform
 
 # https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_thresholding/py_thresholding.html
 # https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html

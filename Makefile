@@ -11,4 +11,4 @@ sync: ## sync
 ##
 ## Modules
 sudoku: ## 00 sudoku
-	python3 modules/00_sudoku/sudoku-detector.py
+	cd modules/00_sudoku && python3 sudoku-detector.py
