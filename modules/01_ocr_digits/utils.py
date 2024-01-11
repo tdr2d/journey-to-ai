@@ -16,6 +16,11 @@ def show_images(images, columns=2, rows=2, labels=[], show=True):
         fig.tight_layout()
         plt.show()
 
+def cv2show(img):
+    cv2.imshow("Image", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
 def remove_noise(img):
     kernel = np.ones((1,1),np.uint8)
     return cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
