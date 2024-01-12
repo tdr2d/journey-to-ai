@@ -10,7 +10,7 @@ def show_images(images, columns=2, rows=2, labels=[], show=True):
         plt.imshow(img)
         plt.axis('off')
         if len(labels):
-            plt.title(f"{labels[i-1]}", loc='left', fontsize=8, pad=2)
+            plt.title(f"{labels[i-1]} i: {i-1}", loc='left', fontsize=8, pad=2)
         i += 1
     if show:
         fig.tight_layout()

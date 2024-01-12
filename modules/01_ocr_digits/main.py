@@ -5,11 +5,10 @@ import tqdm
 import cv2
 from utils import *
 from rectangle import Rectangle
-import math
 ssl._create_default_https_context = ssl._create_unverified_context
 
 THRESHOLD = 127 # optimizing threshold https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/OWENS/LECT2/node3.html
-SAMPLE = 100
+SAMPLE = 90
 PIXELS_X = 28
 PIXELS_Y = 28
 MIN_CONTOUR_THRESHOLD = 0.05
@@ -19,19 +18,20 @@ def find_digit_contour(gray_img):
     # RETR_EXTERNAL child contour are ignored
     # CHAIN_APPROX_NONE return closest geometry fit
     contours = cv2.findContours(gray_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[0]  
-    min_contour_height = int(img.shape[0] * MIN_CONTOUR_THRESHOLD)
-    min_contour_width = int(img.shape[1] * MIN_CONTOUR_THRESHOLD)
+    min_contour_height = int(gray_img.shape[0] * MIN_CONTOUR_THRESHOLD)
+    min_contour_width = int(gray_img.shape[1] * MIN_CONTOUR_THRESHOLD)
     contour_quandidates = [] 
     for c in contours:
         x,y,w,h = cv2.boundingRect(c)
-        if w > min_contour_width and w < img.shape[1] - 1 and h > min_contour_height and h < img.shape[0] - 1:
-            contour_quandidates.append(Rectangle(x,y,w,h))
+        if w > min_contour_width and w < gray_img.shape[1] - 1 and h > min_contour_height and h < gray_img.shape[0] - 1:
+            contour_quandidates.append(c)
 
     if len(contour_quandidates):
-        big_contour = contour_quandidates.pop()
-        for r in contour_quandidates:
-            big_contour = big_contour.merge(r)
-        return big_contour
+        contour_points = np.concatenate((contour_quandidates))
+        epsilon = 0.1*cv2.arcLength(contour_points,True)
+        approx = cv2.approxPolyDP(contour_points,epsilon,True)  
+        return approx
+    
     return None
 
 
@@ -69,8 +69,7 @@ def preprocessing(img):
     out_color = cv2.cvtColor(out, cv2.COLOR_GRAY2BGR)
     digit_contour = find_digit_contour(out)
     if digit_contour is not None:
-        digit_contour.debug(out_color)
-        
+        cv2.drawContours(out_color, [digit_contour], 0, (0,255,0), 1)
         # sub_image = digit_contour.get_sub_image(out)
         # mask_width = max(digit_contour.w, digit_contour.h) + 3
         # mask = np.zeros((mask_width, mask_width), np.uint8)
@@ -81,20 +80,22 @@ def preprocessing(img):
         # todo rotate
         # mask = cv2.resize(mask, (PIXELS_X, PIXELS_Y))
     
-    return out_color
+    return cv2.cvtColor(out_color, cv2.COLOR_BGR2GRAY)
 
 def combine(ref, out):
     for i in range(SAMPLE):
         yield np.concatenate((ref[i], out[i]))
 
+
+def test_mnist_sample():
+    (images, labels), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+    ref_images = images[0:SAMPLE]
+    out = list(map(preprocessing, ref_images))
+    out = list(combine(ref_images, out))
+    show_images(out, columns=15, rows=int(SAMPLE/15), labels=list(labels[0:SAMPLE]))
+
 if __name__ == "__main__":
-    img = cv2.imread('test/8_uncentered_unaligned.png')
-    img = preprocessing(img)
-    # cv2show(img)
-    cv2.imwrite('tmp/test.png', img)
-    
-    # (images, labels), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-    # ref_images = images[0:SAMPLE]
-    # out = list(map(preprocessing, ref_images))
-    # out = list(combine(ref_images, out)) + [img]
-    # show_images(out, columns=15, rows=int(SAMPLE/15)+2, labels=list(labels[0:SAMPLE]) + [8])
+    # img = preprocessing(cv2.imread('test/8_uncentered_unaligned.png'))
+    # cv2.imwrite('tmp/test.png', img)
+
+    test_mnist_sample()
