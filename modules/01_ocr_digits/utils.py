@@ -10,11 +10,16 @@ def show_images(images, columns=2, rows=2, labels=[], show=True):
         plt.imshow(img)
         plt.axis('off')
         if len(labels):
-            plt.title(f"{labels[i-1]}", loc='left', fontsize=8, pad=2)
+            plt.title(f"{labels[i-1]} i: {i-1}", loc='left', fontsize=8, pad=2)
         i += 1
     if show:
         fig.tight_layout()
         plt.show()
+
+def cv2show(img):
+    cv2.imshow("Image", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 def remove_noise(img):
     kernel = np.ones((1,1),np.uint8)

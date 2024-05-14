@@ -1,4 +1,4 @@
 *.pyc
 .pytest_cache/
 tmp/
-
+modules/01_ocr_digits/tmp/
