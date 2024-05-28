@@ -5,7 +5,7 @@
 | LLM   	| Large Language model, notable for its ability to generate language. Synonym of Chatbot.   	|
 | Model size / Number of Parameters    | The model size is the number of parameters in the LLM. The more parameters a model has, the more complex it is and the more data it can process. However, larger models are also more computationally expensive to train and deploy.|
 | Prompt  	| The question asked to a chatbot.  	|
-| Training   	| Learning (determining) good values for all the weights and the bias from labeled examples.. 	|
+| Training   	| Learning (determining) good values for all the weights and the bias (connections between data to retain what is correct) from labeled examples.. 	|
 | Inference   	| Using an AI trained model with input data (prompt) to obtain an answer. 	|
 | Temperature  	| Creativity of the answers of the model. Higher values will generate more diverse outputs. Lowers values will deliver more conservative and deterministic results.  	|
 | Halucination  	| factually incorrect, nonsensical, or disconnected answer from the input prompt  	|
@@ -56,7 +56,7 @@ docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app
 ```
 It will deploy two openwebUI and ollama in a single container.
 
-It will expose the openWebUI on the url: http://PUBLIC-INSTANCE-IP:3000
+It will expose the openWebUI on port 3000. You can access the service using the url: http://PUBLIC-INSTANCE-IP:3000
 
 
 # OpenWebUI configuration
@@ -67,7 +67,7 @@ It will expose the openWebUI on the url: http://PUBLIC-INSTANCE-IP:3000
 
 
 # Shut down the service
-To delete the container and the data run the following command :
+To stop, delete the container and delete the data stored locally, run the following command :
 ```sh
-docker rm open-webui --volumes
+docker stop open-webui && docker rm open-webui --volumes
 ```
