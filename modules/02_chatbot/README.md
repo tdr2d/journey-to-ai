@@ -2,14 +2,14 @@
 
 |Concept   	|Definition   	|
 |---	|---	|
-| LLM   	| Large Language model, notable for its ability to generate language. Synonym of Chatbot.   	|
+| LLM   	| Large Language model, synonym of Chatbot, is an algorythm having the ability to generate language.    	|
 | Model size / Number of Parameters    | The model size is the number of parameters in the LLM. The more parameters a model has, the more complex it is and the more data it can process. However, larger models are also more computationally expensive to train and deploy.|
 | Prompt  	| The question asked to a chatbot.  	|
 | Training   	| Learning (determining) good values for all the weights and the bias (connections between data to retain what is correct) from labeled examples.. 	|
 | Inference   	| Using an AI trained model with input data (prompt) to obtain an answer. 	|
 | Temperature  	| Creativity of the answers of the model. Higher values will generate more diverse outputs. Lowers values will deliver more conservative and deterministic results.  	|
 | Halucination  	| factually incorrect, nonsensical, or disconnected answer from the input prompt  	|
-| RAG   	| Retrieval-augmented generation, a concept allowing a model to generate answers retrieved from custom sources of knowledge (eg: private documentation, FAQ etc...) 	|
+| RAG   	| Retrieval-Augmented Generation, a concept allowing a model to generate answers retrieved from custom sources of knowledge (eg: private documentation, FAQ etc...) 	|
 
 
 # Prerequisites
@@ -71,3 +71,6 @@ To stop, delete the container and delete the data stored locally, run the follow
 ```sh
 docker stop open-webui && docker rm open-webui --volumes
 ```
+
+# More advanced Tools
+https://github.com/langgenius/dify
