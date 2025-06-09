@@ -5,3 +5,4 @@ modules/01_ocr_digits/tmp/
 modules/03_deepfake/*.jpg
 modules/03_deepfake/*.jpeg
 modules/03_deepfake/*.png
+*.zip

@@ -10,7 +10,8 @@
 | Temperature  	| Creativity of the answers of the model. Higher values will generate more diverse outputs. Lowers values will deliver more conservative and deterministic results.  	|
 | Halucination  	| factually incorrect, nonsensical, or disconnected answer from the input prompt  	|
 | RAG   	| Retrieval-Augmented Generation, a concept allowing a model to generate answers retrieved from custom sources of knowledge (eg: private documentation, FAQ etc...) 	|
-
+| Fine-Tunning   	| Re-train a model with custom data 	|
+| Embedings   	| An Embedding model converts your documents into “vectors”, mathematical representations of text that capture semantic meaning. |
 
 # Prerequisites
 - A Cuda and docker compatible OS. You can use the NVIDIA GPU Cloud (NGC) OS which already includes CUDA + Docker
