@@ -38,5 +38,5 @@ This model converts the data from text/image/sound to a vector a machine can bet
 The model is used only to perform RAG, when you need to analyse additional documents which were not used when training the completion model.
 
 ### Why do you need a Vector Database ?
-The vector Database is necesary for RAG. The knowledge documents are translated into vector via the Embedding model and then stored as vectors.
-The vectors are searched when prompting to feed the LLM model with context.
+The vector Database is necesary for RAG. The knowledge documents are translated into vectors via the Embedding model and then stored as vectors.
+The vectors are searched when prompting to feed the LLM model with a context.
