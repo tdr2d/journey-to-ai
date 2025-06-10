@@ -21,11 +21,6 @@ docker run -d --name open-webui -p 3000:8080 \
     -v open-webui-data:/app/backend/data ghcr.io/open-webui/open-webui:main
 ```
 
-
-
-docker run --rm --name open-webui -p 3000:8080 -e OPENAI_API_KEY=$OVH_AI_ENDPOINTS_API_KEY -e OPENAI_API_BASE_URL="https://oai.endpoints.kepler.ai.cloud.ovh.net/v1"  -e RAG_OPENAI_API_BASE_URL="https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/embeddings" -e RAG_EMBEDDING_ENGINE="openai" -e RAG_EMBEDDING_MODEL="bge-multilingual-gemma2"  -v open-webui-data:/app/backend/data   ghcr.io/open-webui/open-webui:main  
-
-
 ### Recommended completion model:
 * Qwen2.5-VL-72B-Instruct
 
